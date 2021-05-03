@@ -1,0 +1,433 @@
+---
+title: "DATA601 - Homework Five: Bivariate Relationships, Modeling, and Functions"
+author: 'Krishna Chaitanya Rao - MS Data Analytics and Computational Social Sciences'
+date: '`10/04/2021'
+output:
+  html_document:
+    df_print: paged
+---
+
+#Objective- 
+
+##To identify the factors were affecting hotel prices in the Indian hotel industry including 42 different cities based on data collected on 8 different dates consisting of some internal and external factors.
+
+#Motivation to conduct this study
+
+##It is a common phenomenon that we are witnessing divergence in hotel rates not only in India but around the world. why is that? What prompted the hoteliers to impose different fees and what drives the tourist to pay more for some hotels or hotels in a particular place. Here in this report we will analyze the independent factors that contribute to this spread. We will make use of data, some charts, graphs and regression analysis, and on the basis of these we will try to analyze the data and try to find out the possible factors that affect the price behavior in the hotel industries.
+
+#OBJECTIVE OF RESEARCH
+
+##1- To test the hypothesis that if there exists any price difference of the hotels according to the tourist destination.
+
+##2- If yes then What factors affect the pricing strategy of the hotels?
+
+#Experiment analysis:
+
+#We will read the dataset by creating dataframe called hotel and will use command to summarize it. We will use boxplots and scatterplot to visualize the data and try to establish any sort of relationship between the variables. We will use correlation matrix to know the correlation between the variables concerned. Correlogram and corrplot is also used to depict graphically the relationship between the variables.
+
+
+```{r}
+library(readr)
+hotel <- read_csv("Hotelsdata.csv")
+View(hotel)
+```
+
+```{r}
+library(DataExplorer)
+DataExplorer::create_report(hotel)
+```
+
+```{r}
+#Dimension of the dataset
+dim(hotel)
+#There are 13232 rows and 20 columns
+```
+
+```{r}
+##Summarizing the entire dataset
+library(psych)
+summary(hotel)
+```
+
+```{r}
+library(psych)
+describe(hotel)[,c(3:6)]
+```
+##Creating one-way contingency tables for the categorical variables
+
+
+```{r}
+# i) Tourist
+istourist<-table(hotel$IsTouristDestination)
+istourist 
+```
+
+```{r}
+mytable <- with(hotel, table(IsTouristDestination)) #second method
+mytable
+
+#insight: ##If we look at tourist destination there are 4007 non-tourist destination as compared to 9225 tourist destination (Almost double of non-tourist destination)
+```
+
+```{r}
+## ii) Is weekend
+mytable<-with(hotel,table(IsWeekend))
+mytable
+#insight: If we look at weekend destination is 8241 in total against 4991 almost half of weekend destination
+```
+
+```{r}
+## iii) IsMetrocity
+mytable <- with(hotel, table(IsMetroCity))
+mytable
+#insight:Here metro destinations are less in number. Non-metro city destinations are almost half in number as compared to metro destination.
+
+```
+
+```{r}
+## iv) IsNewYearEve
+mytable <- with(hotel, table(IsNewYearEve))
+mytable
+
+## Data is collected 1646 times for the new yearEve.
+```
+
+#Study on Internal Factors:
+
+```{r}
+## I) Star Rating
+mytable <- with(hotel, table(StarRating))
+mytable
+
+#Insight: If we look at the star ratings 3 -star hotel rating is most in number followed by 4-star rating and 5-star rating.
+```
+
+```{r}
+# ii) Airport 
+mytable <- with(hotel, table(Airport))
+mytable
+#insight: From this data we can see that the airports which are very far from the hotels are in majority. airports 124 km away hotels are 128 while 105 km are 240 in number.
+```
+
+```{r}
+## iv) Freewifi 
+mytable<-with(hotel,table(FreeWifi))
+mytable
+#insight: Hotels having FreeWifi are 12251 in number. Most of the hotels are now FreeWifi enabled.
+```
+
+```{r}
+## v) FreeBreakfast
+mytable<-with(hotel,table(FreeBreakfast))
+mytable
+#insight: Hotels having breakfast facility are almost double in number as compared to hotels not having breakfast facility.
+```
+
+```{r}
+## vi) HasSwimmingPool
+mytable<-with(hotel,table(HasSwimmingPool))
+mytable
+
+#insight: Here the number of the hotels are not concerned with having SwimmingPool are almost 1.8 times in number as compared to hotels having swimmingpools.
+```
+
+```{r}
+## vii) Date
+mytable<-with(hotel,table(Date))
+mytable
+#Insight: The dataset is having some vague pattern about the data. It’s difficult to draw out any pattern here. Now let us create two-way contingency table to see the patterns for the two varibles taken together.
+```
+
+```{r}
+#ISweekend and IsnewYearEve
+mytable<-with(hotel,table(IsWeekend,IsNewYearEve))
+mytable
+mytable[2,2]
+#insight: 1644 times the data is collected on the weekend and newyearEve
+```
+
+```{r}
+#IsNewYearEve and IsTouristDestination
+
+mytable<-with(hotel,table(IsNewYearEve,IsTouristDestination))
+mytable
+mytable[2,2]
+#insight: 1143 times the values are collected for NewYearEve and TouristDestination.
+```
+
+
+```{r}
+#IsTouristDestination And Starrating
+
+mytable<-with(hotel,table(IsTouristDestination,StarRating))
+mytable
+mytable[2,2]
+```
+
+```{r}
+#FreeWifi and FreeBreakfast
+
+mytable<-with(hotel,table(FreeWifi,FreeBreakfast))
+mytable
+mytable[2,2]
+
+#Insight: 8214 hotels are having Freebreakfast and Freewifi facility
+```
+
+```{r}
+#FreeWifi AND HAS SWIMMING POOL
+
+mytable<-with(hotel,table(FreeWifi,HasSwimmingPool))
+mytable
+mytable[2,2]
+
+#insight: 4319 hotels are having both free wifi and swimming pool facility
+```
+
+```{r}
+#Breakfast and SwimmingPool
+
+mytable<-with(hotel,table(FreeBreakfast,HasSwimmingPool))
+mytable
+mytable[2,2]
+
+#insight: 2870 hotels have both the facility of Free Breakfast and Swimming Pool.
+```
+
+```{r}
+#Average of Roomrent on the basis of IsWeekend and IsNewYear
+
+aggregate(hotel$RoomRent, by=list(Weekend = hotel$IsWeekend, NewyearServe = hotel$IsNewYearEve), mean)
+
+#insight: Here average roomrent on non-weekend normal day is 5429.473. Average roomrent on weekend and new yearEve is 6219.655.
+
+
+```
+```{r}
+#Here is the average brek-up of RoomRent city-wise
+
+aggregate(hotel$RoomRent, by=list(city = hotel$CityName), mean)
+
+#insight: Jodhpur, Udaipur , Srinagar and Goa are the most expensive and all of these cities are non-metro cities. But these four are Tourist destination.
+```
+
+```{r}
+#Average RoomRent on the basis of TouristDestination and MetroCity
+
+aggregate(hotel$RoomRent,by=list(touristplace= hotel$IsTouristDestination, MetroCity= hotel$IsMetroCity),mean)
+
+#Insight: See here both TouristDestination and MetroCity are cheaper as compared to ToristDestination and non-metrocity.
+```
+
+```{r}
+#Average RoomRent on the basis of FreeWifi facility ,FreeBreakfast, and SwimmingPool facility
+
+attach(hotel)
+aggregate(hotel$RoomRent, by=list(Free_Wifi = hotel$FreeWifi, FreeBreakfast = hotel$FreeBreakfast, SwimmingPool = HasSwimmingPool), mean)
+
+```
+
+```{r}
+boxplot(hotel$RoomRent,main="Hotel Rent",xlab="Rent",horizontal=TRUE,ylim=c(0,150000),col=c("peachpuff"))
+
+#Insight: Here lot of outliers in the data. Some hotels are exorbitantly high. May be having all sorts of facility like tourist destination, located in metro city, having 5-star rating, very near to airport, having free wifi and free breakfast. Otherwise Hotel rent is less than say rs 25000 approx for most of the hotels. Data values are clustered towards left.
+```
+
+```{r}
+#population
+
+boxplot(hotel$Population, main="population data",xlab="population",horizontal=TRUE,col=c("orchid3"))
+
+#Star Rating
+
+boxplot(hotel$StarRating , main="Hotel Rating",xlab="StarRating",horizontal=TRUE,col=c("beige"))
+
+#Insight: Here First and second quartiles are coinciding at 3-star rating. Only two hotels are having poor rating of 0 and 1. This data is evenly distributed. 50% hotels are having below 3-star rating and 50% of the hotels are above 3-star ratings. Also 50% of the total Hotels are having rating in between 3 and 4.
+```
+
+
+```{r}
+boxplot(hotel$Airport , main="Distance of Hotels from Airport",xlab="Airport",horizontal=TRUE,col=c("chartreuse"))
+
+#Insight: Lot of outliers can be seen . Some of the hotels are very far from the airport.
+```
+
+```{r}
+boxplot(hotel$HotelCapacity , main="No of rooms",xlab="HotelCapacity",horizontal=TRUE,col=c("blue"))
+
+#Insight: Some of the hotels are having high accomodating power. see the outliers present in the dataset.Most of the hotels are having guest capacity below 100.
+```
+
+```{r}
+#Rent on Weekends
+
+boxplot(hotel$RoomRent~hotel$IsWeekend ,main="price on weekends",xlab="rent",ylab="weekends" ,horizontal=TRUE,ylim=c(0,100000),col=c("orchid3","peachpuff"))
+
+#insight: here it seems like price variation is same across the weekdays and weekends. That means this factor may not be affecting rent at all
+
+#Rent in metro cities
+
+boxplot(hotel$RoomRent ~ hotel$IsMetroCity ,main="price in metros",xlab="rent",ylab="Metro" ,horizontal=TRUE,ylim=c(0,100000),col=c("red","blue"))
+
+#Insight: Here we can see that the there are some extremely high room rent in non-metro cities. Lot of outliers for the non-metrocities room rent. It is against the expectations
+
+#Rent in tourist places
+
+boxplot(hotel$RoomRent ~ hotel$IsTouristDestination,main="price in tourist places",xlab="rent",ylab="tourist place" ,horizontal=TRUE,ylim=c(0,100000),col=c("orchid3","green"))
+
+#Rents are higher in tourist places. Median rent is also high in tourist places.Some Quite extremely costly hotels are there in tourist places. It is as per the expectation .
+
+#Rent during new yearEve
+
+boxplot(hotel$RoomRent ~ hotel$IsNewYearEve ,main="price on new year eve",xlab="rent",ylab="new yeareve" ,horizontal=TRUE,ylim=c(0,100000),col=c("red","peachpuff"))
+```
+
+```{r}
+#Rent based on star-ratings
+
+boxplot(hotel$RoomRent ~ hotel$StarRating ,main="price of star hotels",xlab="rent",ylab="star-rating" ,horizontal=TRUE,ylim=c(0,100000),col=c("blue","peachpuff"))
+
+#insight: Lot of variation is seen clearly. Some of the 5-star ratings hotels are exorbitantly high. most of the star-rating hotels are cheaper. 4.8 star- rating and 3.4 star ratings are very expensive than others.
+```
+
+```{r}
+par(mfrow=c(2,2))
+hist(hotel$StarRating,xlab = "ratings",main = "star-Rating",col = "orchid3")
+hist(hotel$FreeWifi,xlab = "Wifi",main = "freeWifi",col = "green")
+hist(hotel$FreeBreakfast,xlab = "breakfast",main = "FreeBreakfast",col = "chartreuse4")
+hist(hotel$HasSwimmingPool,xlab = "Swimmingpool",main = "Swimmingpool",col = "brown")
+
+#insight: HOTELS in metro cities are less in comoarison to non-metro cities. HOTELS in touristplaces are more against non-tourist places HOTELS during weekends are more here. HOTELS with 3-star rating is high. HOTELShaving free wifi , free breakfast and having swimming poll facility are greater in number as against those hotels where these facilities are absent.
+```
+
+```{r}
+#RoomRent vs StarRating
+
+plot(hotel$StarRating , hotel$RoomRent  ,data=hotel,main=" RoomRent vs Rating",ylab="rent", xlab = "rating",col=c("red","blue","green","brown"))
+
+#insight: See the best line fit we have got here. It says increase in ratings will lead to increase in RoomRents.
+```
+
+```{r}
+library(car)
+scatterplotMatrix(formula=~RoomRent+IsWeekend+IsNewYearEve+StarRating+FreeBreakfast+HasSwimmingPool,data=hotel,diagonal="histogram",pch=6)
+```
+
+```{r}
+#Scatterplot matrix of internal factors only
+
+scatterplotMatrix(hotel[,c( "RoomRent",  "StarRating" , "Airport" ,  "FreeWifi" , "FreeBreakfast","HotelCapacity","HasSwimmingPool")], spread = FALSE, smoother.args = list(lty=2), main= "Scatterplot Matrix",diagonal = "histogram")
+```
+
+
+```{r}
+#Correlogram
+library(corrgram)
+
+corrgram(hotel, order=TRUE, lower.panel=panel.shade,
+         upper.panel=panel.pie, text.panel=panel.txt,
+         main="Corrgram of Hotel  data")
+```
+
+```{r}
+library(corrgram)
+
+colnames(hotel)
+rent<-data.frame(hotel$HasSwimmingPool, hotel$HotelCapacity, hotel$StarRating, hotel$IsTouristDestination)
+corrgram(rent, order=TRUE, lower.panel=panel.shade,
+         upper.panel=panel.pie, text.panel=panel.txt,
+         main="Corrgram of Hotel Prices In India")
+```
+
+```{r}
+#scatter plots:
+library(car)
+
+scatterplot(RoomRent~StarRating,     data= hotel,
+            spread=FALSE, smoother.args=list(lty=2),
+            main="Scatter plot of Star Rating vs Room rent",
+            ylab="Room Rent",
+            xlab="Star Rating")
+
+```
+
+```{r}
+scatterplotMatrix(formula = ~ RoomRent + IsWeekend + IsNewYearEve +Airport , data = hotel, pch = 16)
+```
+
+```{r}
+scatterplot(x = hotel$Population , y = hotel$CityRank, main="Population Vs City Rank " , xlab="Population", ylab="City rank")
+```
+
+#Now let us work on some assumptions:
+
+```{r}
+#H1: NewYearEve is related with RoomRent Ho: Newyear is not related with RoomRent
+tab1<-with(hotel,table(IsNewYearEve,RoomRent))
+chisq.test(tab1)
+
+#insight: Here p-value is >0.05. We are accepting our null hypothesis that these two variables are not related. Thus our claim is rejected here on the basis of chisquare test.
+```
+
+```{r}
+# H2: New Year Eve is related with Tourist Destination
+tab2<-with(hotel,table(IsNewYearEve,IsTouristDestination))
+chisq.test(tab2)
+
+#Here again our claim is getting rejected on the basis of p-value>0.05. There is no relation between NEW YearEve and TouristDestination.
+```
+
+```{r}
+#Roomrent VS Population
+
+cor.test(hotel$RoomRent, hotel$Population)
+
+#insight: Here correlation is significant as p-value<0.05 So our null hypothesis of no correlation is rejected. Population and RoomRent are negativley correlated.
+```
+
+
+```{r}
+#Roomrent VS Starrating
+cor.test(hotel$RoomRent, hotel$StarRating)
+
+#insight: p-value<0.05 So there is significant positive correlation between Star rating and RoomRent.
+```
+
+
+```{r}
+#Roomrent VS Ismetrocity
+
+cor.test(hotel$RoomRent, hotel$IsMetroCity)
+#insight: p-value<0.05. negative and significant correlation between room rent and IsMetrocity var.
+```
+
+
+```{r}
+#Roomrent VS Cityrank
+cor.test(hotel$RoomRent, hotel$CityRank)
+
+#insight: p-value is less than 0.05 . so there is significant positive correlation between these two.
+```
+
+
+```{r}
+#Roomrent vs IsnewyearEve
+cor.test(hotel$RoomRent, hotel$IsNewYearEve)
+
+#insight: Here p-value<0.05 . There is a significant positive relationship between these two.
+```
+
+```{r}
+#T Test
+#Null Hypothesis - Their is no Difference between the Room Rent on new year's eve and on other days
+t.test(hotel$RoomRent ~ hotel$IsNewYearEve)
+```
+
+```{r}
+t.test(hotel$RoomRent ~ hotel$FreeWifi)
+
+#insight: P-Value = 3.046e-05 (<0.05) Which is small enough for Rejecting the Null Hupothesis. Hence there is significant difference between the Room Rent on new year's eve and on other days
+#Null Hypothesis - Their is no Difference between the Room Rent where wifi is free and other rooms.
+```
+
+

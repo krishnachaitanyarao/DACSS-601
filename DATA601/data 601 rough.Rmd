@@ -1,0 +1,28 @@
+---
+title: "DATA 601 - Tutiorals-1"
+author: "Krishna"
+date: "2/18/2021"
+output: html_document
+---
+
+```{r}
+a <- c(10,12,13,13,19,9)
+a
+```
+
+```{r}
+a + 2
+```
+
+```{r}
+install.packages("tidyverse")
+```
+
+```{r}
+install.packages("Rcmdr")
+```
+
+```{r}
+library(tidyverse)
+```
+

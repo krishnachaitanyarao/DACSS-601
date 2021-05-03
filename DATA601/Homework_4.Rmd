@@ -1,0 +1,174 @@
+---
+title: "Course Code:DATA 601; Homework 4 - Data Visualization"
+author: "Krishna Chaitanya Rao - MS Data Analytics and Computational Social Sciences"
+output:
+  html_document: default
+  word_document: default
+  pdf_document: default
+---
+
+In this homework-4 I have used the same dataset whihch i had used for the homework-3. The objective of this homework is to work on the data visulaization and find the hidden patterns in the dataset (covid vaccination dataset).
+
+```{r}
+library(tinytex)
+#Loading the Data
+#About Dataset: This dataset has the data related to covid19 vaccinations around the world.
+library(tidyverse)
+library(dplyr)
+testdata <-  read_csv("~/Desktop/MSDACSS/DATA601/country_vaccinations.csv") #Tibble #reading the data
+```
+
+```{r}
+#To find the missing values in the dataset; colum wise.
+colSums(is.na(testdata))
+
+#Counting the missing values in the dataset.
+apply(testdata, MARGIN = 2, function(x) sum(is.na(x)))
+
+
+#or 
+library(psych)
+describe(testdata)
+```
+
+```{r}
+class(testdata) #Type of data
+```
+
+```{r}
+dim(testdata) #Chcek the dimensions of the data. It returns number of rows * Coloumns
+head(testdata, n = 8) #It displays first 8 rows of the data set
+tail(testdata, n = 9) #It displays last 9 rows of the data set
+```
+
+```{r}
+#Displaying the coloumn names
+colnames(testdata)
+```
+
+```{r}
+#Viewing Country code wise 
+table(testdata$iso_code)
+```
+
+```{r}
+#List the summary of each attribute 
+summary(testdata)
+```
+
+
+```{r}
+#To get to know more than or equal to 100  
+filter(testdata, people_vaccinated >= 100)
+```
+
+```{r}
+arrange(testdata, date, source_name)
+```
+
+
+```{r}
+summarytest <- group_by(testdata, date, vaccines, source_name)
+summarise(summarytest, mean_testing = mean(people_vaccinated, na.rm = TRUE))
+```
+
+```{r}
+newtestdata <- testdata %>%
+  select(country, iso_code, date, total_vaccinations) %>%
+  group_by(country) %>%
+  filter(!is.na(total_vaccinations)) %>%
+  filter(total_vaccinations == max(total_vaccinations))
+
+head(testdata, n = 15)
+```
+
+
+#Data Visualization
+
+```{r}
+library(tidyverse)
+ggplot(testdata, aes(total_vaccinations)) + geom_histogram()
+```
+
+
+```{r}
+#Plotting density 
+
+ggplot(testdata, aes(total_vaccinations)) + geom_histogram(aes(y= ..density..), alpha = 0.5) + geom_density(alpha = 0.2, fill = 'yellow')
+```
+
+
+
+```{r}
+
+library(pacman)
+library(tidyverse)
+library(lubridate)
+#Let me store my original dataset which is in "testdata" to a temporary dataframe.
+tempdata <- testdata
+
+## Used na.omit command to remove any NA values in the dataset 
+newtempdata <- na.omit(tempdata)
+head(newtempdata)
+```
+
+```{r}
+## Now I am interested in from the larger dataset and named this new table 'data1'. Lets try to see the relationship over time between countries and daily vaccinations.
+
+data1 <- newtempdata %>%
+  select(country, date, daily_vaccinations)
+head(data1)
+```
+
+```{r}
+#Since there are lot of countries, So I have decided to play with specific countries where covid is growing drastically. 
+data2 <- data1 %>%
+  filter(country %in% c("Germany", "United Kingdom", "United States", "Canada", "France", "Israel", "Chile", "Brazil"))
+head(data2)
+str(data2)
+```
+
+```{r}
+#I found this pacman library very useful while formating the date as "year", month, day to make it easier to work with when I go to filter the dates.
+data2$date <- data2$date %>%
+  ymd()
+```
+
+```{r}
+## Used dplyr 'filter' command in order to choose only March 2021 dates, so as to make the final visualization less daunting also i am very intrested to see march because its a Covid Anniversary :)  
+
+march_vacc <- data2 %>%
+  filter(month(date)==3)
+```
+
+```{r}
+
+plot1<-ggplot(march_vacc, aes(x=date, y=daily_vaccinations, group=country)) +
+  geom_line(aes(color=country))+
+  geom_point(aes(color=country)) +
+  ggtitle("COVID Vaccinations in the selected Countries (March 2021)")+
+  xlab("March 2021")+
+  ylab("Daily Vaccinations")+
+  theme_minimal()
+plot1
+```
+```{r}
+by_country <- group_by(tempdata, country)
+summarise <- summarise(by_country, count = n(),
+country_vaccinations_mean = mean(total_vaccinations, na.rm = TRUE))
+by_country <-head(summarise %>% arrange(desc(country_vaccinations_mean)))
+
+#ggplot
+ggplot(by_country, aes(x=country_vaccinations_mean, y=country)) + geom_point()
+```
+
+```{r}
+ggplot(data=by_country, aes(x=(reorder(country, country_vaccinations_mean)), y = country_vaccinations_mean))+
+  geom_bar(stat="identity", fill= 'skyblue')+ coord_flip()+
+  labs(title="Average of country vaccinations", x= "Country", y = "Country Vaccinations Mean")+
+  geom_text(aes(label=round(country_vaccinations_mean, digits = 2)))+
+  theme(plot.title=element_text(hjust=0.5)) + theme_minimal()
+```
+
+
+

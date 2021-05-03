@@ -1,0 +1,852 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Course Code:DATA 601; Homework 4 - Data Visualization},
+  pdfauthor={Krishna Chaitanya Rao - MS Data Analytics and Computational Social Sciences},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifluatex
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\title{Course Code:DATA 601; Homework 4 - Data Visualization}
+\author{Krishna Chaitanya Rao - MS Data Analytics and Computational
+Social Sciences}
+\date{}
+
+\begin{document}
+\maketitle
+
+In this homework-4 I have used the same dataset whihch i had used for
+the homework-3. The objective of this homework is to work on the data
+visulaization and find the hidden patterns in the dataset (covid
+vaccination dataset).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(tinytex)}
+\CommentTok{\#Loading the Data}
+\CommentTok{\#About Dataset: This dataset has the data related to covid19 vaccinations around the world.}
+\FunctionTok{library}\NormalTok{(tidyverse)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'tidyverse' was built under R version 3.5.2
+\end{verbatim}
+
+\begin{verbatim}
+## -- Attaching packages --------------------------------------- tidyverse 1.3.0 --
+\end{verbatim}
+
+\begin{verbatim}
+## v ggplot2 3.3.3     v purrr   0.3.4
+## v tibble  3.1.0     v dplyr   1.0.5
+## v tidyr   1.1.3     v stringr 1.4.0
+## v readr   1.4.0     v forcats 0.5.1
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'stringr' was built under R version 3.5.2
+\end{verbatim}
+
+\begin{verbatim}
+## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(dplyr)}
+\NormalTok{testdata }\OtherTok{\textless{}{-}}  \FunctionTok{read\_csv}\NormalTok{(}\StringTok{"\textasciitilde{}/Desktop/MSDACSS/DATA601/country\_vaccinations.csv"}\NormalTok{) }\CommentTok{\#Tibble \#reading the data}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## -- Column specification --------------------------------------------------------
+## cols(
+##   country = col_character(),
+##   iso_code = col_character(),
+##   date = col_date(format = ""),
+##   total_vaccinations = col_double(),
+##   people_vaccinated = col_double(),
+##   people_fully_vaccinated = col_double(),
+##   daily_vaccinations_raw = col_double(),
+##   daily_vaccinations = col_double(),
+##   total_vaccinations_per_hundred = col_double(),
+##   people_vaccinated_per_hundred = col_double(),
+##   people_fully_vaccinated_per_hundred = col_double(),
+##   daily_vaccinations_per_million = col_double(),
+##   vaccines = col_character(),
+##   source_name = col_character(),
+##   source_website = col_character()
+## )
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#To find the missing values in the dataset; colum wise.}
+\FunctionTok{colSums}\NormalTok{(}\FunctionTok{is.na}\NormalTok{(testdata))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                             country                            iso_code 
+##                                   0                                 356 
+##                                date                  total_vaccinations 
+##                                   0                                2200 
+##                   people_vaccinated             people_fully_vaccinated 
+##                                2627                                3740 
+##              daily_vaccinations_raw                  daily_vaccinations 
+##                                2810                                 191 
+##      total_vaccinations_per_hundred       people_vaccinated_per_hundred 
+##                                2200                                2627 
+## people_fully_vaccinated_per_hundred      daily_vaccinations_per_million 
+##                                3740                                 191 
+##                            vaccines                         source_name 
+##                                   0                                   0 
+##                      source_website 
+##                                   0
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Counting the missing values in the dataset.}
+\FunctionTok{apply}\NormalTok{(testdata, }\AttributeTok{MARGIN =} \DecValTok{2}\NormalTok{, }\ControlFlowTok{function}\NormalTok{(x) }\FunctionTok{sum}\NormalTok{(}\FunctionTok{is.na}\NormalTok{(x)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                             country                            iso_code 
+##                                   0                                 356 
+##                                date                  total_vaccinations 
+##                                   0                                2200 
+##                   people_vaccinated             people_fully_vaccinated 
+##                                2627                                3740 
+##              daily_vaccinations_raw                  daily_vaccinations 
+##                                2810                                 191 
+##      total_vaccinations_per_hundred       people_vaccinated_per_hundred 
+##                                2200                                2627 
+## people_fully_vaccinated_per_hundred      daily_vaccinations_per_million 
+##                                3740                                 191 
+##                            vaccines                         source_name 
+##                                   0                                   0 
+##                      source_website 
+##                                   0
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#or }
+\FunctionTok{library}\NormalTok{(psych)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Attaching package: 'psych'
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:ggplot2':
+## 
+##     %+%, alpha
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{describe}\NormalTok{(testdata)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in FUN(newX[, i], ...): no non-missing arguments to min; returning Inf
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in FUN(newX[, i], ...): no non-missing arguments to max; returning -Inf
+\end{verbatim}
+
+\begin{verbatim}
+##                                     vars    n       mean         sd    median
+## country*                               1 6108      65.73      39.08     63.00
+## iso_code*                              2 5752      60.95      37.31     59.00
+## date                                   3 6108        NaN         NA        NA
+## total_vaccinations                     4 3908 2137405.14 7429940.97 238646.00
+## people_vaccinated                      5 3481 1757375.82 5602468.60 222005.00
+## people_fully_vaccinated                6 2368  680537.78 2731855.19  84892.50
+## daily_vaccinations_raw                 7 3298   82918.43  243166.17  13382.50
+## daily_vaccinations                     8 5917   57919.61  189358.01   6637.00
+## total_vaccinations_per_hundred         9 3908       8.63      15.84      3.24
+## people_vaccinated_per_hundred         10 3481       6.71      10.93      2.88
+## people_fully_vaccinated_per_hundred   11 2368       2.95       6.61      1.19
+## daily_vaccinations_per_million        12 5917    2549.64    4299.56   1217.00
+## vaccines*                             13 6108      11.92       6.17     10.00
+## source_name*                          14 6108      45.12      21.28     54.00
+## source_website*                       15 6108      57.69      37.03     50.00
+##                                       trimmed       mad min          max
+## country*                                65.35     53.37   1       133.00
+## iso_code*                               60.18     48.93   1       129.00
+## date                                      NaN        NA Inf         -Inf
+## total_vaccinations                  675036.39 341700.01   0 101128005.00
+## people_vaccinated                   543536.33 310468.30   0  65965305.00
+## people_fully_vaccinated             218341.76 120024.62   1  35000159.00
+## daily_vaccinations_raw               31929.53  18582.17   0   2924112.00
+## daily_vaccinations                   18218.08   9249.94   1   2302844.00
+## total_vaccinations_per_hundred           4.94      4.37   0       135.02
+## people_vaccinated_per_hundred            4.11      3.69   0        85.99
+## people_fully_vaccinated_per_hundred      1.44      1.51   0        49.02
+## daily_vaccinations_per_million        1647.77   1423.30   0     54264.00
+## vaccines*                               11.40      5.93   1        25.00
+## source_name*                            46.46     14.83   1        79.00
+## source_website*                         55.86     45.96   1       129.00
+##                                            range  skew kurtosis        se
+## country*                                  132.00  0.07    -1.28      0.50
+## iso_code*                                 128.00  0.15    -1.24      0.49
+## date                                        -Inf    NA       NA        NA
+## total_vaccinations                  101128005.00  8.00    78.03 118852.44
+## people_vaccinated                    65965305.00  6.51    51.65  94957.09
+## people_fully_vaccinated              35000158.00  8.70    84.31  56139.28
+## daily_vaccinations_raw                2924112.00  6.49    50.30   4234.26
+## daily_vaccinations                    2302843.00  6.82    55.30   2461.69
+## total_vaccinations_per_hundred            135.02  3.88    18.58      0.25
+## people_vaccinated_per_hundred              85.99  3.16    12.36      0.19
+## people_fully_vaccinated_per_hundred        49.02  4.58    22.38      0.14
+## daily_vaccinations_per_million          54264.00  4.95    39.14     55.90
+## vaccines*                                  24.00  0.53    -0.90      0.08
+## source_name*                               78.00 -0.64    -0.67      0.27
+## source_website*                           128.00  0.31    -1.18      0.47
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{class}\NormalTok{(testdata) }\CommentTok{\#Type of data}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "spec_tbl_df" "tbl_df"      "tbl"         "data.frame"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{dim}\NormalTok{(testdata) }\CommentTok{\#Chcek the dimensions of the data. It returns number of rows * Coloumns}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 6108   15
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{head}\NormalTok{(testdata, }\AttributeTok{n =} \DecValTok{8}\NormalTok{) }\CommentTok{\#It displays first 8 rows of the data set}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 8 x 15
+##   country iso_code date       total_vaccinati~ people_vaccinat~ people_fully_va~
+##   <chr>   <chr>    <date>                <dbl>            <dbl>            <dbl>
+## 1 Albania ALB      2021-01-10                0                0               NA
+## 2 Albania ALB      2021-01-11               NA               NA               NA
+## 3 Albania ALB      2021-01-12              128              128               NA
+## 4 Albania ALB      2021-01-13              188              188               NA
+## 5 Albania ALB      2021-01-14              266              266               NA
+## 6 Albania ALB      2021-01-15              308              308               NA
+## 7 Albania ALB      2021-01-16              369              369               NA
+## 8 Albania ALB      2021-01-17              405              405               NA
+## # ... with 9 more variables: daily_vaccinations_raw <dbl>,
+## #   daily_vaccinations <dbl>, total_vaccinations_per_hundred <dbl>,
+## #   people_vaccinated_per_hundred <dbl>,
+## #   people_fully_vaccinated_per_hundred <dbl>,
+## #   daily_vaccinations_per_million <dbl>, vaccines <chr>, source_name <chr>,
+## #   source_website <chr>
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{tail}\NormalTok{(testdata, }\AttributeTok{n =} \DecValTok{9}\NormalTok{) }\CommentTok{\#It displays last 9 rows of the data set}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 9 x 15
+##   country iso_code date       total_vaccinati~ people_vaccinat~ people_fully_va~
+##   <chr>   <chr>    <date>                <dbl>            <dbl>            <dbl>
+## 1 Zimbab~ ZWE      2021-03-04            30658            30658               NA
+## 2 Zimbab~ ZWE      2021-03-05            31325            31325               NA
+## 3 Zimbab~ ZWE      2021-03-06            32014            32014               NA
+## 4 Zimbab~ ZWE      2021-03-07            32240            32240               NA
+## 5 Zimbab~ ZWE      2021-03-08            35518            35518               NA
+## 6 Zimbab~ ZWE      2021-03-09            35761            35761               NA
+## 7 Zimbab~ ZWE      2021-03-10            35901            35901               NA
+## 8 Zimbab~ ZWE      2021-03-11            36019            36019               NA
+## 9 Zimbab~ ZWE      2021-03-12            36283            36283               NA
+## # ... with 9 more variables: daily_vaccinations_raw <dbl>,
+## #   daily_vaccinations <dbl>, total_vaccinations_per_hundred <dbl>,
+## #   people_vaccinated_per_hundred <dbl>,
+## #   people_fully_vaccinated_per_hundred <dbl>,
+## #   daily_vaccinations_per_million <dbl>, vaccines <chr>, source_name <chr>,
+## #   source_website <chr>
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Displaying the coloumn names}
+\FunctionTok{colnames}\NormalTok{(testdata)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] "country"                             "iso_code"                           
+##  [3] "date"                                "total_vaccinations"                 
+##  [5] "people_vaccinated"                   "people_fully_vaccinated"            
+##  [7] "daily_vaccinations_raw"              "daily_vaccinations"                 
+##  [9] "total_vaccinations_per_hundred"      "people_vaccinated_per_hundred"      
+## [11] "people_fully_vaccinated_per_hundred" "daily_vaccinations_per_million"     
+## [13] "vaccines"                            "source_name"                        
+## [15] "source_website"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Viewing Country code wise }
+\FunctionTok{table}\NormalTok{(testdata}\SpecialCharTok{$}\NormalTok{iso\_code)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##      AGO      AIA      ALB      AND      ARE      ARG      AUS      AUT 
+##        4       23       60       45       67       74       26       75 
+##      AZE      BEL      BGD      BGR      BHR      BLR      BLZ      BMU 
+##       55       74       45       74       80       53       13       60 
+##      BOL      BRA      BRB      CAN      CHE      CHL      CHN      CIV 
+##       44       56       25       89       46       79       76       10 
+##      COL      CRI      CYM      CYP      CZE      DEU      DMA      DNK 
+##       24       79       70       61       76       76       19       75 
+##      DOM      DZA      ECU      EGY      ESP      EST      FIN      FLK 
+##       25       22       51        7       67       74       72       16 
+##      FRA      FRO      GBR      GGY      GHA      GIB      GRC      GRD 
+##       75       43       89       38       10       62       75       16 
+##      GRL      GTM      GUY      HKG      HND      HRV      HUN      IDN 
+##       34       15       12       20        1       69       75       60 
+##      IMN      IND      IRL      IRN      ISL      ISR      ITA      JEY 
+##       51       57       69       10       73       84       76       43 
+##      JOR      JPN      KAZ      KEN      KHM      KOR      KWT      LBN 
+##       45       24       25        7       32       16       71       28 
+##      LCA      LIE      LKA      LTU      LUX      LVA      MAC      MAR 
+##       17       33       44       76       72       71       33       44 
+##      MCO      MDA      MDV      MEX      MLT      MMR      MNE      MNG 
+##       20        8       39       79       54        8       21        5 
+##      MSR      MUS      MYS      NLD      NOR      NPL      NZL      OMN 
+##       16       24       18       50       75       26       21       73 
+## OWID_NCY      PAK      PAN      PER      PHL      POL      PRT      PRY 
+##        9       20       53       31       11       74       76       20 
+##      QAT      ROU      RUS      RWA      SAU      SEN      SGP      SHN 
+##       76       75       88       25       66       17       57        1 
+##      SLV      SMR      SRB      SVK      SVN      SWE      SYC      TCA 
+##        9       13       64       68       75       76       62       30 
+##      THA      TTO      TUR      UKR      URY      USA      VEN      ZAF 
+##       12        8       59       17       14       83       16       25 
+##      ZWE 
+##       23
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#List the summary of each attribute }
+\FunctionTok{summary}\NormalTok{(testdata)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    country            iso_code              date            total_vaccinations 
+##  Length:6108        Length:6108        Min.   :2020-12-13   Min.   :        0  
+##  Class :character   Class :character   1st Qu.:2021-01-22   1st Qu.:    35432  
+##  Mode  :character   Mode  :character   Median :2021-02-10   Median :   238646  
+##                                        Mean   :2021-02-06   Mean   :  2137405  
+##                                        3rd Qu.:2021-02-25   3rd Qu.:  1112548  
+##                                        Max.   :2021-03-12   Max.   :101128005  
+##                                                             NA's   :2200       
+##  people_vaccinated  people_fully_vaccinated daily_vaccinations_raw
+##  Min.   :       0   Min.   :       1        Min.   :      0       
+##  1st Qu.:   33633   1st Qu.:   16035        1st Qu.:   2618       
+##  Median :  222005   Median :   84892        Median :  13382       
+##  Mean   : 1757376   Mean   :  680538        Mean   :  82918       
+##  3rd Qu.:  911312   3rd Qu.:  425709        3rd Qu.:  56643       
+##  Max.   :65965305   Max.   :35000159        Max.   :2924112       
+##  NA's   :2627       NA's   :3740            NA's   :2810          
+##  daily_vaccinations total_vaccinations_per_hundred
+##  Min.   :      1    Min.   :  0.000               
+##  1st Qu.:   1122    1st Qu.:  0.680               
+##  Median :   6637    Median :  3.240               
+##  Mean   :  57920    Mean   :  8.627               
+##  3rd Qu.:  28857    3rd Qu.:  8.762               
+##  Max.   :2302844    Max.   :135.020               
+##  NA's   :191        NA's   :2200                  
+##  people_vaccinated_per_hundred people_fully_vaccinated_per_hundred
+##  Min.   : 0.000                Min.   : 0.000                     
+##  1st Qu.: 0.690                1st Qu.: 0.310                     
+##  Median : 2.880                Median : 1.190                     
+##  Mean   : 6.712                Mean   : 2.949                     
+##  3rd Qu.: 6.850                3rd Qu.: 2.610                     
+##  Max.   :85.990                Max.   :49.020                     
+##  NA's   :2627                  NA's   :3740                       
+##  daily_vaccinations_per_million   vaccines         source_name       
+##  Min.   :    0                  Length:6108        Length:6108       
+##  1st Qu.:  355                  Class :character   Class :character  
+##  Median : 1217                  Mode  :character   Mode  :character  
+##  Mean   : 2550                                                       
+##  3rd Qu.: 2682                                                       
+##  Max.   :54264                                                       
+##  NA's   :191                                                         
+##  source_website    
+##  Length:6108       
+##  Class :character  
+##  Mode  :character  
+##                    
+##                    
+##                    
+## 
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#To get to know more than or equal to 100  }
+\FunctionTok{filter}\NormalTok{(testdata, people\_vaccinated }\SpecialCharTok{\textgreater{}=} \DecValTok{100}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 3,416 x 15
+##    country iso_code date       total_vaccinations people_vaccinated
+##    <chr>   <chr>    <date>                  <dbl>             <dbl>
+##  1 Albania ALB      2021-01-12                128               128
+##  2 Albania ALB      2021-01-13                188               188
+##  3 Albania ALB      2021-01-14                266               266
+##  4 Albania ALB      2021-01-15                308               308
+##  5 Albania ALB      2021-01-16                369               369
+##  6 Albania ALB      2021-01-17                405               405
+##  7 Albania ALB      2021-01-18                447               447
+##  8 Albania ALB      2021-01-19                483               483
+##  9 Albania ALB      2021-01-20                519               519
+## 10 Albania ALB      2021-01-21                549               549
+## # ... with 3,406 more rows, and 10 more variables:
+## #   people_fully_vaccinated <dbl>, daily_vaccinations_raw <dbl>,
+## #   daily_vaccinations <dbl>, total_vaccinations_per_hundred <dbl>,
+## #   people_vaccinated_per_hundred <dbl>,
+## #   people_fully_vaccinated_per_hundred <dbl>,
+## #   daily_vaccinations_per_million <dbl>, vaccines <chr>, source_name <chr>,
+## #   source_website <chr>
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{arrange}\NormalTok{(testdata, date, source\_name)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 6,108 x 15
+##    country          iso_code date       total_vaccinations people_vaccinated
+##    <chr>            <chr>    <date>                  <dbl>             <dbl>
+##  1 England          <NA>     2020-12-13              55576             55576
+##  2 Northern Ireland <NA>     2020-12-13               3623              3623
+##  3 Scotland         <NA>     2020-12-13              19009             19009
+##  4 United Kingdom   GBR      2020-12-13              86465             86465
+##  5 Wales            <NA>     2020-12-13               8257              8257
+##  6 England          <NA>     2020-12-14                 NA                NA
+##  7 Northern Ireland <NA>     2020-12-14                 NA                NA
+##  8 Scotland         <NA>     2020-12-14                 NA                NA
+##  9 United Kingdom   GBR      2020-12-14                 NA                NA
+## 10 Wales            <NA>     2020-12-14                 NA                NA
+## # ... with 6,098 more rows, and 10 more variables:
+## #   people_fully_vaccinated <dbl>, daily_vaccinations_raw <dbl>,
+## #   daily_vaccinations <dbl>, total_vaccinations_per_hundred <dbl>,
+## #   people_vaccinated_per_hundred <dbl>,
+## #   people_fully_vaccinated_per_hundred <dbl>,
+## #   daily_vaccinations_per_million <dbl>, vaccines <chr>, source_name <chr>,
+## #   source_website <chr>
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{summarytest }\OtherTok{\textless{}{-}} \FunctionTok{group\_by}\NormalTok{(testdata, date, vaccines, source\_name)}
+\FunctionTok{summarise}\NormalTok{(summarytest, }\AttributeTok{mean\_testing =} \FunctionTok{mean}\NormalTok{(people\_vaccinated, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `summarise()` has grouped output by 'date', 'vaccines'. You can override using the `.groups` argument.
+\end{verbatim}
+
+\begin{verbatim}
+## # A tibble: 4,617 x 4
+## # Groups:   date, vaccines [1,573]
+##    date       vaccines                 source_name                  mean_testing
+##    <date>     <chr>                    <chr>                               <dbl>
+##  1 2020-12-13 Oxford/AstraZeneca, Pfi~ Government of the United Ki~        34586
+##  2 2020-12-14 Moderna, Pfizer/BioNTech Official data from province~          NaN
+##  3 2020-12-14 Oxford/AstraZeneca, Pfi~ Government of the United Ki~          NaN
+##  4 2020-12-15 EpiVacCorona, Sputnik V  Official data from local go~        28500
+##  5 2020-12-15 Moderna, Pfizer/BioNTech Official data from province~          NaN
+##  6 2020-12-15 Oxford/AstraZeneca, Pfi~ Government of the United Ki~          NaN
+##  7 2020-12-15 Sinopharm/Beijing, Sino~ National Health Commission            NaN
+##  8 2020-12-16 EpiVacCorona, Sputnik V  Official data from local go~          NaN
+##  9 2020-12-16 Moderna, Pfizer/BioNTech Official data from province~          NaN
+## 10 2020-12-16 Oxford/AstraZeneca, Pfi~ Government of the United Ki~          NaN
+## # ... with 4,607 more rows
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{newtestdata }\OtherTok{\textless{}{-}}\NormalTok{ testdata }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(country, iso\_code, date, total\_vaccinations) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(country) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(total\_vaccinations)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(total\_vaccinations }\SpecialCharTok{==} \FunctionTok{max}\NormalTok{(total\_vaccinations))}
+
+\FunctionTok{head}\NormalTok{(testdata, }\AttributeTok{n =} \DecValTok{15}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 15 x 15
+##    country iso_code date       total_vaccinations people_vaccinated
+##    <chr>   <chr>    <date>                  <dbl>             <dbl>
+##  1 Albania ALB      2021-01-10                  0                 0
+##  2 Albania ALB      2021-01-11                 NA                NA
+##  3 Albania ALB      2021-01-12                128               128
+##  4 Albania ALB      2021-01-13                188               188
+##  5 Albania ALB      2021-01-14                266               266
+##  6 Albania ALB      2021-01-15                308               308
+##  7 Albania ALB      2021-01-16                369               369
+##  8 Albania ALB      2021-01-17                405               405
+##  9 Albania ALB      2021-01-18                447               447
+## 10 Albania ALB      2021-01-19                483               483
+## 11 Albania ALB      2021-01-20                519               519
+## 12 Albania ALB      2021-01-21                549               549
+## 13 Albania ALB      2021-01-22                 NA                NA
+## 14 Albania ALB      2021-01-23                 NA                NA
+## 15 Albania ALB      2021-01-24                 NA                NA
+## # ... with 10 more variables: people_fully_vaccinated <dbl>,
+## #   daily_vaccinations_raw <dbl>, daily_vaccinations <dbl>,
+## #   total_vaccinations_per_hundred <dbl>, people_vaccinated_per_hundred <dbl>,
+## #   people_fully_vaccinated_per_hundred <dbl>,
+## #   daily_vaccinations_per_million <dbl>, vaccines <chr>, source_name <chr>,
+## #   source_website <chr>
+\end{verbatim}
+
+\#Data Visualization
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(tidyverse)}
+\FunctionTok{ggplot}\NormalTok{(testdata, }\FunctionTok{aes}\NormalTok{(total\_vaccinations)) }\SpecialCharTok{+} \FunctionTok{geom\_histogram}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Removed 2200 rows containing non-finite values (stat_bin).
+\end{verbatim}
+
+\includegraphics{Homework_4_files/figure-latex/unnamed-chunk-12-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Plotting density }
+
+\FunctionTok{ggplot}\NormalTok{(testdata, }\FunctionTok{aes}\NormalTok{(total\_vaccinations)) }\SpecialCharTok{+} \FunctionTok{geom\_histogram}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{y=}\NormalTok{ ..density..), }\AttributeTok{alpha =} \FloatTok{0.5}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{geom\_density}\NormalTok{(}\AttributeTok{alpha =} \FloatTok{0.2}\NormalTok{, }\AttributeTok{fill =} \StringTok{\textquotesingle{}yellow\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Removed 2200 rows containing non-finite values (stat_bin).
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Removed 2200 rows containing non-finite values (stat_density).
+\end{verbatim}
+
+\includegraphics{Homework_4_files/figure-latex/unnamed-chunk-13-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(pacman)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'pacman' was built under R version 3.5.2
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(tidyverse)}
+\FunctionTok{library}\NormalTok{(lubridate)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Attaching package: 'lubridate'
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:base':
+## 
+##     date, intersect, setdiff, union
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Let me store my original dataset which is in "testdata" to a temporary dataframe.}
+\NormalTok{tempdata }\OtherTok{\textless{}{-}}\NormalTok{ testdata}
+
+\DocumentationTok{\#\# Used na.omit command to remove any NA values in the dataset }
+\NormalTok{newtempdata }\OtherTok{\textless{}{-}} \FunctionTok{na.omit}\NormalTok{(tempdata)}
+\FunctionTok{head}\NormalTok{(newtempdata)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 6 x 15
+##   country iso_code date       total_vaccinati~ people_vaccinat~ people_fully_va~
+##   <chr>   <chr>    <date>                <dbl>            <dbl>            <dbl>
+## 1 Albania ALB      2021-02-18             3049             2438              611
+## 2 Argent~ ARG      2021-01-21           265724           249372            16352
+## 3 Argent~ ARG      2021-01-22           279602           254456            25146
+## 4 Argent~ ARG      2021-01-23           288064           258876            29188
+## 5 Argent~ ARG      2021-01-24           292023           260036            31987
+## 6 Argent~ ARG      2021-01-25           292386           260122            32264
+## # ... with 9 more variables: daily_vaccinations_raw <dbl>,
+## #   daily_vaccinations <dbl>, total_vaccinations_per_hundred <dbl>,
+## #   people_vaccinated_per_hundred <dbl>,
+## #   people_fully_vaccinated_per_hundred <dbl>,
+## #   daily_vaccinations_per_million <dbl>, vaccines <chr>, source_name <chr>,
+## #   source_website <chr>
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\# Now I am interested in from the larger dataset and named this new table \textquotesingle{}data1\textquotesingle{}. Lets try to see the relationship over time between countries and daily vaccinations.}
+
+\NormalTok{data1 }\OtherTok{\textless{}{-}}\NormalTok{ newtempdata }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(country, date, daily\_vaccinations)}
+\FunctionTok{head}\NormalTok{(data1)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 6 x 3
+##   country   date       daily_vaccinations
+##   <chr>     <date>                  <dbl>
+## 1 Albania   2021-02-18                254
+## 2 Argentina 2021-01-21              11704
+## 3 Argentina 2021-01-22              11263
+## 4 Argentina 2021-01-23              11124
+## 5 Argentina 2021-01-24              10342
+## 6 Argentina 2021-01-25               9046
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Since there are lot of countries, So I have decided to play with specific countries where covid is growing drastically. }
+\NormalTok{data2 }\OtherTok{\textless{}{-}}\NormalTok{ data1 }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(country }\SpecialCharTok{\%in\%} \FunctionTok{c}\NormalTok{(}\StringTok{"Germany"}\NormalTok{, }\StringTok{"United Kingdom"}\NormalTok{, }\StringTok{"United States"}\NormalTok{, }\StringTok{"Canada"}\NormalTok{, }\StringTok{"France"}\NormalTok{, }\StringTok{"Israel"}\NormalTok{, }\StringTok{"Chile"}\NormalTok{, }\StringTok{"Brazil"}\NormalTok{))}
+\FunctionTok{head}\NormalTok{(data2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 6 x 3
+##   country date       daily_vaccinations
+##   <chr>   <date>                  <dbl>
+## 1 Brazil  2021-02-06             199739
+## 2 Brazil  2021-02-07             211375
+## 3 Brazil  2021-02-08             211604
+## 4 Brazil  2021-02-09             218237
+## 5 Brazil  2021-02-10             228375
+## 6 Brazil  2021-02-11             190540
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{str}\NormalTok{(data2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## tibble [437 x 3] (S3: tbl_df/tbl/data.frame)
+##  $ country           : chr [1:437] "Brazil" "Brazil" "Brazil" "Brazil" ...
+##  $ date              : Date[1:437], format: "2021-02-06" "2021-02-07" ...
+##  $ daily_vaccinations: num [1:437] 199739 211375 211604 218237 228375 ...
+##  - attr(*, "na.action")= 'omit' Named int [1:4207] 1 2 3 4 5 6 7 8 9 10 ...
+##   ..- attr(*, "names")= chr [1:4207] "1" "2" "3" "4" ...
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#I found this pacman library very useful while formating the date as "year", month, day to make it easier to work with when I go to filter the dates.}
+\NormalTok{data2}\SpecialCharTok{$}\NormalTok{date }\OtherTok{\textless{}{-}}\NormalTok{ data2}\SpecialCharTok{$}\NormalTok{date }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ymd}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\# Used dplyr \textquotesingle{}filter\textquotesingle{} command in order to choose only March 2021 dates, so as to make the final visualization less daunting also i am very intrested to see march because its a Covid Anniversary :)  }
+
+\NormalTok{march\_vacc }\OtherTok{\textless{}{-}}\NormalTok{ data2 }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(}\FunctionTok{month}\NormalTok{(date)}\SpecialCharTok{==}\DecValTok{3}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{plot1}\OtherTok{\textless{}{-}}\FunctionTok{ggplot}\NormalTok{(march\_vacc, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{date, }\AttributeTok{y=}\NormalTok{daily\_vaccinations, }\AttributeTok{group=}\NormalTok{country)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_line}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{color=}\NormalTok{country))}\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{color=}\NormalTok{country)) }\SpecialCharTok{+}
+  \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"COVID Vaccinations in the selected Countries (March 2021)"}\NormalTok{)}\SpecialCharTok{+}
+  \FunctionTok{xlab}\NormalTok{(}\StringTok{"March 2021"}\NormalTok{)}\SpecialCharTok{+}
+  \FunctionTok{ylab}\NormalTok{(}\StringTok{"Daily Vaccinations"}\NormalTok{)}\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{()}
+\NormalTok{plot1}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Homework_4_files/figure-latex/unnamed-chunk-19-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{by\_country }\OtherTok{\textless{}{-}} \FunctionTok{group\_by}\NormalTok{(tempdata, country)}
+\NormalTok{summarise }\OtherTok{\textless{}{-}} \FunctionTok{summarise}\NormalTok{(by\_country, }\AttributeTok{count =} \FunctionTok{n}\NormalTok{(),}
+\AttributeTok{country\_vaccinations\_mean =} \FunctionTok{mean}\NormalTok{(total\_vaccinations, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{))}
+\NormalTok{by\_country }\OtherTok{\textless{}{-}}\FunctionTok{head}\NormalTok{(summarise }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{arrange}\NormalTok{(}\FunctionTok{desc}\NormalTok{(country\_vaccinations\_mean)))}
+
+\CommentTok{\#ggplot}
+\FunctionTok{ggplot}\NormalTok{(by\_country, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{country\_vaccinations\_mean, }\AttributeTok{y=}\NormalTok{country)) }\SpecialCharTok{+} \FunctionTok{geom\_point}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Homework_4_files/figure-latex/unnamed-chunk-20-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data=}\NormalTok{by\_country, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{(}\FunctionTok{reorder}\NormalTok{(country, country\_vaccinations\_mean)), }\AttributeTok{y =}\NormalTok{ country\_vaccinations\_mean))}\SpecialCharTok{+}
+  \FunctionTok{geom\_bar}\NormalTok{(}\AttributeTok{stat=}\StringTok{"identity"}\NormalTok{, }\AttributeTok{fill=} \StringTok{\textquotesingle{}skyblue\textquotesingle{}}\NormalTok{)}\SpecialCharTok{+} \FunctionTok{coord\_flip}\NormalTok{()}\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title=}\StringTok{"Average of country vaccinations"}\NormalTok{, }\AttributeTok{x=} \StringTok{"Country"}\NormalTok{, }\AttributeTok{y =} \StringTok{"Country Vaccinations Mean"}\NormalTok{)}\SpecialCharTok{+}
+  \FunctionTok{geom\_text}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{label=}\FunctionTok{round}\NormalTok{(country\_vaccinations\_mean, }\AttributeTok{digits =} \DecValTok{2}\NormalTok{)))}\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}\AttributeTok{plot.title=}\FunctionTok{element\_text}\NormalTok{(}\AttributeTok{hjust=}\FloatTok{0.5}\NormalTok{)) }\SpecialCharTok{+} \FunctionTok{theme\_minimal}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Homework_4_files/figure-latex/unnamed-chunk-21-1.pdf}
+
+\end{document}

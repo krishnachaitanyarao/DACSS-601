@@ -1,0 +1,197 @@
+---
+title: "testing"
+author: "Krishna"
+date: "26/04/2021"
+output: html_document
+---
+
+##Abstract:
+
+#E-commerce stores are growing rapidly. Their sales have increased during corona pandemic time. For maintaining a good position in market, they need to have a close check on their customers in context to their behaviour and preferences. Linear Regression model is applied to make a informed decisions about their strategy on whether amazon cloth company needs to focus their efforts on their mobile app experience or their website to attract more customers.
+
+##Introduction:
+
+#Due to this pandemic, online shopping has increased significantly. In order to have good sales, e- commerce store needs to analyse the behavior of the customers on their website or on their app. Amazon sells cloths online. Customers come in to the store, have meetings with a personal stylist, then they can go home and order either on a mobile app or website for the clothes they want.
+
+#We are trying to decide whether company needs to focus their efforts on their mobile app experience or their website. And we have done following analysis to predict that.
+
+#Linear regression is a basic and commonly used type of predictive analysis. 
+
+#The overall idea of regression is to examine two things: 
+
+#(1) does a set of predictor variables do a good job in predicting an outcome (dependent) variable? 
+
+#(2) Which variables in particular are significant predictors of the outcome variable, and in what way do they–indicated by the magnitude and sign of the beta estimates–impact the outcome variable? These regression estimates are used to explain the relationship between one dependent variable and one or more independent variables.
+
+#There are three major uses for regression analysis are:
+
+#(1) Determining the strength of predictors 
+#(2) forecasting an effect, and 
+#(3) trend forecasting.
+
+#We will be using the regression to identify the strength of the effect that the independent variable(s) have on a dependent variable. Here our independent variable the time spent by customer on a website or app yearly, which depends upon various factors like Length of Membership, Time on App, Time on Website, Avg. Session Length.
+
+```{r}
+#Loading the Data
+library(tidyverse)
+library(dplyr)
+library(readr)
+customers <- read_csv("Downloads/customers.csv")
+View(customers)
+sum(is.na(customers))
+```
+
+```{r}
+#Lets explore more about data
+customers.describe()
+```
+
+```{r}
+#check column names
+colnames(customers)
+customers <- customers[ , -c(1:3)] # Removing the first,second and third column which is is an Index
+head(customers)
+```
+
+
+```{r}
+#making a scatter matrix with bivariate scatter plots below the diagonal, histograms on the diagonal, 
+#and the Pearson correlation above the diagonal.
+install.packages("psych")
+library(psych)
+pairs.panels(customers, 
+             method = "pearson", # correlation method
+             hist.col = "#00AFBB",
+             density = TRUE,  # show density plots
+             ellipses = TRUE # show correlation ellipses
+)
+```
+
+
+```{r}
+#making an lm model plot between customers spending yearly time on app
+x <- customers$Yearly.Amount.Spent
+y <- customers$Length.of.Membership
+# Plot with axis titles
+
+# Change point shape (pch = 19) and remove frame.
+plot(x, y, xlab = "Yearly.Amount.Spent", ylab = "Length.of.Membership",
+     pch = 9, frame = FALSE)
+# Add regression line
+plot(x, y,xlab = "Yearly.Amount.Spent", ylab = "Length.of.Membership",
+     pch = 9, frame = FALSE)
+abline(lm(y ~ x, data = customers), col = "blue")
+```
+
+
+```{r}
+#making linear regression model with full data
+fullmodel <- glm(customers$`Yearly Amount Spent`~ ., data = customers)
+summary(fullmodel)
+
+prob_full <- predict(fullmodel, customers)
+prob_full
+
+# Decide on optimal prediction probability cutoff for the model
+install.packages("InformationValue")
+library(InformationValue)
+optCutOff <- optimalCutoff(customers$Yearly.Amount.Spent, prob_full)
+optCutOff
+
+# Check multicollinearity in the model
+install.packages("caret")
+library(caret)
+library(car)
+vif(fullmodel)
+```
+
+
+```{r}
+# Data splitting  as 70% train data and 30% test data
+n <-  nrow(customers)
+n1 <-  n * 0.7 
+n2 <-  n - n1
+train_index <- sample(1:n, n1)
+train <- customers[train_index, ]
+test <-  customers[-train_index, ]
+
+# Creating new column to store the above values
+test[,"prob"] <- prob_test
+test[,"pred_values"] <- pred_values
+
+```
+
+```{r}
+# Preparing a linear regression and fitting the data
+
+finalmodel <- glm(train$`Yearly Amount Spent` ~ ., data = train)
+summary(finalmodel)
+
+
+# Confusion matrix 
+confusion <- table(prob_test > optCutOff, test$Yearly.Amount.Spent)
+confusion
+
+# Model Accuracy 
+Accuracy <- sum(diag(confusion)/sum(confusion))
+Accuracy 
+
+# Creating empty vectors to store predicted classes based on threshold value
+pred_values <- NULL
+pred_values <- ifelse(prob_test > optCutOff, 1, 0)
+
+
+table(test$Yearly.Amount.Spent, test$pred_values)
+
+#making an scatter plot between customers spending yearly time on website
+#x <- customers$Time.on.Website
+#y <- customers$Yearly.Amount.Spent
+# Plot with axis titles
+# Change point shape (pch = 19) and remove frame.
+#plot(x, y, xlab = "Time.on.Website", ylab = "Yearly.Amount.Spent",
+#     pch = 19, frame = FALSE)
+# Add regression line
+#plot(x, y,xlab = "Time.on.Website", ylab = "Yearly.Amount.Spent",
+#     pch = 19, frame = FALSE)
+#abline(lm(y ~ x, data = customers), col = "blue")
+
+#making an scatter plot between customers spending yearly time on app
+#x <- customers$Time.on.App
+#y <- customers$Yearly.Amount.Spent
+# Plot with axis titles
+# Change point shape (pch = 19) and remove frame.
+#plot(x, y, xlab = "Time.on.App", ylab = "Yearly.Amount.Spent",
+#    pch = 19, frame = FALSE)
+# Add regression line
+#plot(x, y,xlab = "Time.on.App", ylab = "Yearly.Amount.Spent",
+#    pch = 19, frame = FALSE)
+#abline(lm(y ~ x, data = customers), col = "blue")
+```
+
+```{r}
+# Compare the model performance on Train data
+# Prediction on test data
+prob_train <- predict(finalmodel, newdata = train)
+prob_train
+
+# Confusion matrix
+confusion_train <- table(prob_train > optCutOff, train$Yearly.Amount.Spent)
+confusion_train
+```
+
+```{r}
+# Model Accuracy 
+Acc_train <- sum(diag(confusion_train)/sum(confusion_train))
+Acc_train
+# Model performance
+# (a) Prediction error, RMSE(Root Mean Squared Error)
+RMSE(prob_train,  train$Yearly.Amount.Spent)
+# (b) Prediction error, MAE(Mean Absolute Error)
+MAE(prob_train,  train$Yearly.Amount.Spent)
+# (c) R-square
+R2(prob_train,  train$Yearly.Amount.Spent)
+
+#checking for regression coefficients
+summary(finalmodel)$coef
+```
+

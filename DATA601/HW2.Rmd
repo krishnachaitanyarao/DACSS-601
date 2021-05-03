@@ -1,0 +1,65 @@
+---
+title: "HW2_Krishna"
+author: "Krishna"
+date: "2/22/2021"
+output: html_document
+---
+
+##Homework 2
+
+#Goal of this assignement is to get start with R-Markdown. 
+#This assignment is a part of DACSS 601 Course.
+
+```{r}
+#File1
+library(readr) #Loading the library readR to read the file
+scdb <- read.csv(paste('scdb.csv' , sep = "")) #Stored the file in the object called "scdb"
+View(scdb) #For viewing the data in R
+
+#Lets view the top rows of the dataset
+head(scdb)
+#Count the number of rows present in the given dataset
+nrow(scdb)
+#Lets view the bottom rows of the dataset
+tail(scdb)
+#Count the number of coloumns present in the given dataset
+ncol(scdb)
+
+```
+
+
+```{r}
+#File2
+#Since we have loaded library once we need not to load it again (readR)
+congressional_head <- read.csv(paste('congressional_hearings.csv - congressional_hearings.csv', sep = '')) #Stored the file in the object called "congressional_head"
+View(congressional_head) #For viewing the data in R
+
+#Lets view the top rows of the dataset
+head(congressional_head)
+#Lets view the bottom rows of the dataset
+tail(congressional_head)
+
+#Count the number of rows present in the given dataset
+nrow(congressional_head)
+#Count the number of coloumns present in the given dataset
+ncol(congressional_head)
+```
+
+```{r}
+#File3
+covid_responses_tab <- read_csv("covid-responses.tab - covid-responses.tab.csv") #Stored the file in the object called "covid_responses_tab"
+View(covid_responses_tab)
+
+#Lets view the top rows of the dataset
+head(covid_responses_tab)
+#Lets view the bottom rows of the dataset
+tail(covid_responses_tab)
+
+#Count the number of rows present in the given dataset
+nrow(covid_responses_tab)
+#Count the number of coloumns present in the given dataset
+ncol(covid_responses_tab)
+
+```
+
+

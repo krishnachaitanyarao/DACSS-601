@@ -1,0 +1,130 @@
+---
+title: '4'
+author: "Krishna"
+date: "18/03/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+
+#Homework 4
+#Data Visualization
+
+```{r}
+update.packages(ask = FALSE, checkBuilt = TRUE)
+tinytex::tlmgr_update()
+```
+
+```{r}
+library(latexpdf)
+library(pdf)
+library(tinytex)
+#Loading the Data
+#About Dataset: This dataset has the data related to covid19 vaccinations around the world.
+library(tidyverse)
+library(dplyr)
+testdata <- read_csv("country_vaccinations.csv - Sheet1.csv") #Tibble #reading the data
+```
+
+```{r}
+#To find the missing values in the dataset; colum wise.
+colSums(is.na(testdata))
+
+#Counting the missing values in the dataset.
+apply(testdata, MARGIN = 2, function(x) sum(is.na(x)))
+
+#or
+
+library(Hmisc)
+describe(testdata)
+```
+
+```{r}
+class(testdata) #Type of data
+```
+
+```{r}
+dim(testdata) #Chcek the dimensions of the data. It returns number of rows * Coloumns
+head(testdata, n = 8) #It displays first 8 rows of the data set
+tail(testdata, n = 9) #It displays last 9 rows of the data set
+```
+
+```{r}
+#Displaying the coloumn names
+colnames(testdata)
+```
+
+```{r}
+#Viewing Country code wise 
+table(testdata$iso_code)
+```
+
+```{r}
+#List the summary of each attribute 
+summary(testdata)
+```
+
+
+```{r}
+#To get to know more than or equal to 100  
+filter(testdata, people_vaccinated >= 100)
+```
+
+```{r}
+arrange(testdata, date, source_name)
+```
+
+
+```{r}
+summarytest <- group_by(testdata, date, vaccines, source_name)
+summarise(summarytest, mean_testing = mean(people_vaccinated, na.rm = TRUE))
+```
+
+```{r}
+newtestdata <- testdata %>%
+  select(country, iso_code, date, total_vaccinations) %>%
+  group_by(country) %>%
+  filter(!is.na(total_vaccinations)) %>%
+  filter(total_vaccinations == max(total_vaccinations))
+
+head(testdata, n = 15)
+```
+
+
+#Visualization
+
+```{r}
+library(tidyverse)
+ggplot(testdata, aes(total_vaccinations)) + geom_histogram()
+```
+
+```{r}
+#Viewing country wise vaccines usage 
+options(repr.plot.width=12,repr.plot.height=14)
+testdata %>%
+    group_by(vaccines) %>%
+    ggplot(aes(x = vaccines)) +
+    geom_bar(aes(fill = country), show.legend = FALSE) +
+    labs(x = "Vaccines", y = "Number Of Countries") +
+    theme(axis.text.x = element_text(angle = 25, vjust = 1, hjust=1))
+```
+
+
+```{r}
+#Plotting density 
+
+ggplot(testdata, aes(total_vaccinations)) + geom_histogram(aes(y= ..density..), alpha = 0.5) + geom_density(alpha = 0.2, fill = 'yellow')
+```
+
+```{r}
+testdata %>%
+  arrange(desc(total_vaccinations)) %>%
+  head(5) %>%
+  ggplot(aes(total_vaccinations, reorder(country, total_vaccinations))) + theme_minimal() + 
+  geom_bar(stat = 'identity',aes(fill=total_vaccinations)) + scale_x_continuous(labels = scales::comma) + 
+  labs(title = 'Top 5 countries - vaccinations', x = 'Total Vaccinations', y = '') + theme(legend.position = 'none')
+```
+
+
+
